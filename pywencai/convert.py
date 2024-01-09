@@ -161,11 +161,14 @@ def convert(res):
         content = json.loads(content)
     components = content['components'] 
     params = {}
-    if (len(components) == 1 and _.get(components[0], 'show_type') == 'xuangu_tableV1'):
+    
+    xuangu_components = [x for x in components if _.get(x, 'show_type') == 'xuangu_tableV1']
+    if len(xuangu_components) > 0:
         params = {
-            'data': xuangu_tableV1_handler(components[0], components),
-            'row_count' : _.get(components[0], 'data.meta.extra.row_count')
+            'data': xuangu_tableV1_handler(xuangu_components[0], xuangu_components),
+            'row_count' : _.get(xuangu_components[0], 'data.meta.extra.row_count')
         }
+
     else:
         params = {
             'data': multi_show_type_handler(components)
